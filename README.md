@@ -5,6 +5,13 @@ node-ssdb
 ssdb is a fast nosql database, an alternative to redis.
 
 
+Installation
+-------------
+
+```bash
+$ npm install ssdb
+```
+
 Example
 --------
 
@@ -17,3 +24,8 @@ client.set('key', 'val', function(err, data){
   } else throw err;
 });
 ```
+
+License
+-------
+
+[LICENSE-MIT](./LICENSE-MIT)

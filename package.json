@@ -1,0 +1,16 @@
+{
+  "name": "ssdb",
+  "description": "ssdb nodejs client library, ssdb is a fast nosql database, an alternative to redis.",
+  "version": "0.0.1",
+  "author": "hit9 <wangchao@ele.me>",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/eleme/node-ssdb.git"
+  },
+  "main": "./lib/ssdb",
+  "license": "MIT",
+  "engines": {
+    "node" : ">=0.8"
+  },
+  "dependencies": {}
+}
