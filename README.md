@@ -12,6 +12,8 @@ Example
 var client = require('ssdb').Client();
 
 client.set('key', 'val', function(err, data){
-    // console.log(data);
-})
+  if (!err) {
+    console.log(data);
+  } else throw err;
+});
 ```
