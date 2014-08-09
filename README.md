@@ -47,11 +47,56 @@ options (with default values):
 {
   host: '0.0.0.0',
   port: 8888,
-  timeout: 0,
-  connectListener: undefined,
-  timeoutCallback: undefined
+  timeout: 0
 }
 ```
+
+### client.quit()
+
+Quit from ssdb server.
+
+### client.unref()
+
+Equivalent to `client.conn.sock.unref()`, see http://nodejs.org/api/net.html#net_server_unref.
+
+### Client events
+
+#### 'status_ok'
+
+- parameters: `cmd`, `data`
+
+Listener example:
+```js
+var util = require('util');
+
+client.on('status_ok', function(cmd, data){
+  console.log(util.format('%s replies ok, data: %s', cmd, data));
+});
+```
+
+#### 'status_not_found'
+
+- parameters: `cmd`
+
+#### 'status_client_error'
+
+- parameters: `cmd`
+
+#### 'status_not_ok'
+
+- parameters: `cmd`
+
+### Connection Events Handling
+
+The node connection object is `client.conn.sock`, to listen connection error as an example:
+
+```js
+client.conn.sock.on('error', function(err){
+  throw err;
+});
+```
+
+Connection events reference: http://nodejs.org/api/net.html
 
 SSDB API Documentation
 ----------------------
