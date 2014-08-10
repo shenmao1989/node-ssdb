@@ -1,3 +1,2 @@
 .*.sw[op]
 node_modules
-test*.js

@@ -4,7 +4,7 @@ node-ssdb
 [ssdb](https://github.com/ideawu/ssdb) nodejs client library, 
 ssdb is a fast nosql database, an alternative to redis.
 
-Latest version: v0.0.2 (Currently untested).
+Latest version: v0.0.3 (Currently untested).
 
 Requirements
 -------------
@@ -22,7 +22,8 @@ Example
 --------
 
 ```js
-var client = require('ssdb').Client();
+var ssdb = require('ssdb');
+var client = ssdb.createClient();
 
 client.set('key', 'val', function(err, data){
   if (!err) {
@@ -34,13 +35,13 @@ client.set('key', 'val', function(err, data){
 API References
 --------------
 
-### Client(options)
+### createClient(options)
 
 To make a ssdb client:
 
 ```js
 var ssdb = require('ssdb');
-var client = ssdb.Client();
+var client = ssdb.createClient();
 ```
 
 options (with default values):
