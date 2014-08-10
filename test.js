@@ -54,17 +54,22 @@ describe('ssdb', function(){
         done();
       });
     });
-
   });
 
-  // status events test cases
-  it('on-status-ok', function(done) {
-    client.set(uniqueKey(), 'val');
-    client.on('status_ok', function(cmd, data){
-      should(data).eql(1);
-      should(cmd).eql('set');
-      done();
+  it('expire', function(done){
+    var key = uniqueKey();
+    client.set(key, 'v');
+    client.expire(key, 1.2, function(err, val){
+      should(err).eql(undefined);
+      should(val).eql(1);
     });
+    setTimeout(function(){
+      client.exists(key, function(err, val){
+        should(err).eql(undefined);
+        should(val).eql(0);
+        done();
+      });
+    }, 1201);
   });
 
 
