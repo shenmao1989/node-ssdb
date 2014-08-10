@@ -87,7 +87,7 @@ client.on('status_ok', function(cmd, data){
 
 #### 'status_not_ok'
 
-- parameters: `cmd`
+- parameters: `status`, `cmd`
 
 ### Connection Events Handling
 
