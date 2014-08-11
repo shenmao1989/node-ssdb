@@ -442,7 +442,7 @@ describe('ssdb', function(){
     })();
   });
 
-  it('q*', function(done){
+  it('qpush[_back]/qpush_front/qfront/qback/qsize/qget/qpop[_front]/qpop_back/qclear', function(done){
     co(function*(){
       var q = uk('q');
       should(yield client.qpush(q, 1)).eql(1);  // qpush/qpush_back

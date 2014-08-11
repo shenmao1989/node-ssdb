@@ -4,7 +4,7 @@ node-ssdb
 [ssdb](https://github.com/ideawu/ssdb) nodejs client library,
 ssdb is a fast nosql database, an alternative to redis.
 
-Latest version: v0.0.4 (Currently un-fully-tested).
+Latest version: v0.0.4
 
 ![](https://api.travis-ci.org/eleme/node-ssdb.svg)
 
@@ -150,4 +150,4 @@ Detail docs for ssdb interfaces can be found at: https://github.com/hit9/ssdb.ap
 License
 -------
 
-[LICENSE-MIT](./LICENSE-MIT)
+Copyright (c) 2014 Eleme, Inc. detail see [LICENSE-MIT](./LICENSE-MIT)
