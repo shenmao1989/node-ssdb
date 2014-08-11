@@ -139,9 +139,13 @@ var co = require('co');
 
 co(function *(){
   var key = 'k';
-  var a = yield client.set(key, 'v');
-  var b = yield client.get(key);
-  console.log(a, b);  // 1 'v'
+  try{
+    var a = yield client.set(key, 'v');
+    var b = yield client.get(key);
+    console.log(a, b);
+  } catch(e){
+    throw e;
+  }
 })();
 ```
 
