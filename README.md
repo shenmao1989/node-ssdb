@@ -101,6 +101,40 @@ client.conn.sock.on('error', function(err){
 
 Connection events reference: http://nodejs.org/api/net.html
 
+Promise with Q
+--------------
+
+To promisify all commands:
+
+```js
+var Q = require('q');
+var ssdb = require('ssdb');
+
+var client = ssdb.createClient();
+
+for (cmd in ssdb.commands) {
+  client[cmd] = q.denodeify(client[cmd]);
+}
+```
+
+then youcan use `ssdb` the `promise` way:
+
+```js
+client.set('k', 'v')
+.then(function(d){
+  console.log('set reply:', d);
+})
+.then(function(){
+  return client.get('k');
+})
+.then(function(d){
+  console.log('get reply', d);
+})
+.catch(function(e){
+  throw e;
+}).done();
+```
+
 SSDB API Documentation
 ----------------------
 
