@@ -15,6 +15,7 @@ before_install:
 before_script:
   - cd ssdb
   - ./ssdb-server ssdb.conf -d
+  - cd ..
 
 after_script:
   - killall -w ssdb-server
