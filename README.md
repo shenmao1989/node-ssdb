@@ -21,6 +21,8 @@ $ npm install ssdb
 Example
 --------
 
+The traditional Node.js way:
+
 ```js
 var ssdb = require('ssdb');
 var client = ssdb.createClient();
@@ -29,6 +31,37 @@ client.set('key', 'val', function(err, data){
   if (!err) {
     console.log(data);
   } else throw err;
+});
+```
+
+Work with TJ's [co](https://github.com/visionmedia/co):
+
+```js
+var co = require('co');
+client.thunkify();
+
+co(function *(){
+  try{
+    var key = 'key';
+    var a = yield client.set(key, 'val');
+    var b = yield client.get(key);
+    console.log(a, b);  // 1 'val'
+  } catch(e){
+    throw e;
+  }
+})();
+```
+
+Work with promises:
+
+```js
+client.promisify()
+
+client.set('key', 'val')
+.then(function(){
+  return client.get('key')
+}).then(function(d){
+  console.log(d);  // 'val'
 });
 ```
 
@@ -89,6 +122,12 @@ client.on('status_ok', function(cmd, data){
 
 - parameters: `status`, `cmd`
 
+### command names
+
+```js
+ssdb.commands   // js object keys
+```
+
 ### Connection Events Handling
 
 The node connection object is `client.conn.sock`, to listen connection error as an example:
@@ -100,90 +139,6 @@ client.conn.sock.on('error', function(err){
 ```
 
 Connection events reference: http://nodejs.org/api/net.html
-
-### commands
-
-All command names are keys of the object `ssdb.commands`, to loop over all command methods:
-
-```js
-for (var cmd in ssdb.commands) {
-    var method = client[cmd];
-}
-```
-
-Work with Co
-------------
-
-To work with TJ's [co](https://github.com/visionmedia/co), we
-should make these command methods yieldable:
-
-```js
-for (cmd in ssdb.commands) {
-  (function(cmd){
-    var _ = client[cmd];
-    client[cmd] = function(){
-      var args = arguments;
-      return function(cb){
-        [].push.call(args, cb);
-        _.apply(this, args);
-      };
-    };
-  })(cmd);
-}
-```
-
-then, here is an example:
-
-```js
-var co = require('co');
-
-co(function *(){
-  var key = 'k';
-  try{
-    var a = yield client.set(key, 'v');
-    var b = yield client.get(key);
-    console.log(a, b);
-  } catch(e){
-    throw e;
-  }
-})();
-```
-
-Work with Promise
------------------
-
-At first, promisify all commands (via [q](https://github.com/kriskowal/q)
-for an example):
-
-```js
-var Q = require('q');
-var ssdb = require('ssdb');
-
-var client = ssdb.createClient();
-
-for (cmd in ssdb.commands) {
-  client[cmd] = q.denodeify(client[cmd]);
-}
-```
-
-then you can use `ssdb` the `promise` way:
-
-```js
-client.set('k', 'v')
-.then(function(d){
-  console.log('set reply:', d);  // 1
-})
-.then(function(){
-  return client.get('k');  // 'v'
-})
-.then(function(d){
-  console.log('get reply', d);
-})
-.catch(function(e){
-  throw e;
-})
-.done();
-```
 
 SSDB API Documentation
 ----------------------
