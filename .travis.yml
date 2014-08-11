@@ -18,3 +18,6 @@ before_script:
 
 after_script:
   - killall -w ssdb-server
+
+script:
+  - npm test
