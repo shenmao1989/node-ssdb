@@ -2,3 +2,19 @@ language: node_js
 
 node_js:
   - "0.11"
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq libsnappy-dev
+  - git clone git://github.com/ideawu/ssdb.git
+  - cd ssdb
+  - git checkout 0f613f5927bb8af401a19a8dfae483c1a61d83da
+  - make
+  - cd ..
+
+before_script:
+  - cd ssdb
+  - ./ssdb-server ssdb.conf -d
+
+after_script:
+  - killall -w ssdb-server

@@ -4,7 +4,7 @@ node-ssdb
 [ssdb](https://github.com/ideawu/ssdb) nodejs client library,
 ssdb is a fast nosql database, an alternative to redis.
 
-Latest version: v0.0.3 (Currently untested).
+Latest version: v0.0.4 (Currently un-fully-tested).
 
 Requirements
 -------------
@@ -139,18 +139,6 @@ client.conn.sock.on('error', function(err){
 ```
 
 Connection events reference: http://nodejs.org/api/net.html
-
-How to run tests
-----------------
-
-requires node 11.x+:
-
-```bash
-$ npm install co
-$ npm install co-sleep
-$ npm install mocha
-mocha --harmony test.js
-```
 
 SSDB API Documentation
 ----------------------
