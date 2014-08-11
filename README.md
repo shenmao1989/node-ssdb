@@ -95,6 +95,12 @@ Quit from ssdb server.
 
 Equivalent to `client.conn.sock.unref()`, see http://nodejs.org/api/net.html#net_server_unref.
 
+### command names
+
+```js
+ssdb.commands   // js object keys
+```
+
 ### Client events
 
 #### 'status_ok'
@@ -122,12 +128,6 @@ client.on('status_ok', function(cmd, data){
 
 - parameters: `status`, `cmd`
 
-### command names
-
-```js
-ssdb.commands   // js object keys
-```
-
 ### Connection Events Handling
 
 The node connection object is `client.conn.sock`, to listen connection error as an example:
@@ -139,6 +139,18 @@ client.conn.sock.on('error', function(err){
 ```
 
 Connection events reference: http://nodejs.org/api/net.html
+
+How to run tests
+----------------
+
+requires node 11.x+:
+
+```bash
+$ npm install co
+$ npm install co-sleep
+$ npm install mocha
+mocha --harmony test.js
+```
 
 SSDB API Documentation
 ----------------------
