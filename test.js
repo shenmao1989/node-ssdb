@@ -312,4 +312,168 @@ describe('ssdb', function(){
     })();
   });
 
+  it('multi_hset/multi_hget/multi_hdel', function(done){
+    co(function*(){
+      var h = uk('hash');
+      var k1 = uk();
+      var k2 = uk();
+      var k3 = uk();
+      var a = yield client.multi_hset(h, k1, 'v1', k2, 'v2', k3, 'v3');
+      var b = yield client.multi_hget(h, k1, k2, k3);
+      var c = yield client.multi_hdel(h, k1, k2, k3);
+      should([a, c]).eql([3, 3]);
+      should(b).eql([k1, 'v1', k2, 'v2', k3, 'v3']);
+      should(yield client.hsize(h)).eql(0);
+      done();
+    })();
+  });
+
+  it('zset/zget/zdel/zincr/zexists', function(done){
+    co(function*(){
+      var z = uk('zset');
+      var k = uk();
+      var a = client.zset(z, k, 13);
+      var b = client.zget(z, k);
+      var c = client.zincr(z, k, 3);
+      var d = client.zexists(z, k);
+      var e = client.zdel(z, k);
+      var f = client.zexists(z, k);
+      should(yield [a, b, c, d, e, f]).eql([1, 13, 16, true, 1, false]);
+      done();
+    })();
+  });
+
+  it('zsize', function(done){
+    co(function*(){
+      var z = uk('zset');
+      for (var i = 0; i < 10; i++) {
+        yield client.zset(z, uk(), i + 10);
+      }
+      should(yield client.zsize(z)).eql(10);
+      done();
+    })();
+  });
+
+  it('zlist/zrlist', function(done){
+    co(function*(){
+      var start = uk('zset');
+      var a = uk('zset');
+      var b = uk('zset');
+      yield client.zset(a, 'key', 12581);
+      yield client.zset(b, 'key', 12581);
+      var lst = yield client.zlist(start, uk('zset'), -1);
+      var rlst = yield client.zrlist(uk('zset'), start, -1);
+      should(lst).eql([a, b]);
+      should(rlst).eql([b, a]);
+      done();
+    })();
+  });
+
+  it('zkeys/zscan/zrscan/zclear', function(done){
+    co(function*(){
+      var z = uk('zset');
+      var a = uk('key');
+      var b = uk('key');
+      yield client.zset(z, a, 12581);
+      yield client.zset(z, b, 12582);
+      var keys = yield client.zkeys(z, '', '', '', -1);
+      var scan = yield client.zscan(z, '', '', '', -1);
+      var rscan = yield client.zrscan(z, '', '', '', -1);
+      var nums = yield client.zclear(z);
+      should(keys).eql([a, b]);
+      should(scan).eql([a, 12581, b, 12582]);
+      should(rscan).eql([b, 12582, a, 12581]);
+      should(nums).eql(2);
+      should(yield client.zsize(z)).eql(0);
+      done();
+    })();
+  });
+
+  it('multi_zset/multi_zget/multi_zdel', function(done){
+    co(function*(){
+      var z = uk('zset');
+      var k1 = uk();
+      var k2 = uk();
+      var k3 = uk();
+      var a = yield client.multi_zset(z, k1, 1267, k2, 1268, k3, 1269);
+      var b = yield client.multi_zget(z, k1, k2, k3);
+      var c = yield client.multi_zdel(z, k1, k2, k3);
+      should([a, c]).eql([3, 3]);
+      should(b).eql([k1, 1267, k2, 1268, k3, 1269]);
+      should(yield client.zsize(z)).eql(0);
+      done();
+    })();
+  });
+
+  it('zrange/zrrange/zrank/zrrank/zcount/zsum/zavg/zremrangeby[score|rank]', function(done){
+    co(function*(){
+      var z = uk('zset');
+      var keys = [];
+      var results = [];
+
+      for (var i = 0; i < 10; i++) {
+        var key = uk()
+        keys.push(key);
+        results.push(client.zset(z, key, i + 100));
+      }
+      yield results;
+      var rank = client.zrank(z, keys[0]);  // 0
+      var rrank = client.zrrank(z, keys[9]);  // 0
+      should(yield [rank, rrank]).eql([0, 0]);
+
+      var lst = client.zrange(z, 0, 2);
+      var rlst = client.zrrange(z, 0, 2);
+      should(yield lst).eql([keys[0], 100, keys[1], 101]);
+      should(yield rlst).eql([keys[9], 109, keys[8], 108]);
+
+      var sum = client.zsum(z, 100, 102);
+      var avg = client.zavg(z, 100, 102);
+      var count = client.zcount(z, 100, 101); // 2
+
+      should(yield [sum, avg, count]).eql([303, 101, 2]);
+
+      var numsr = client.zremrangebyrank(z, 0, 7);
+      var numss = client.zremrangebyscore(z, 108, 109);  // 2
+
+      should(yield [numsr, numss]).eql([8, 2]);
+
+      should(yield client.zsize(z)).eql(0);
+      done();
+    })();
+  });
+
+  it('q*', function(done){
+    co(function*(){
+      var q = uk('q');
+      should(yield client.qpush(q, 1)).eql(1);  // qpush/qpush_back
+      should(yield client.qpush_front(q, 2)).eql(2); // qpush_front
+      should(yield client.qfront(q)).eql(2); // qfront
+      should(yield client.qback(q)).eql(1);  // qback
+      should(yield client.qsize(q)).eql(2);  // qsize
+      should(yield client.qget(q, 1)).eql(1); // qget
+      should(yield client.qget(q, 0)).eql(2); // qget
+      should(yield client.qslice(q, 0, 3)).eql([2, 1]);
+      should(yield client.qpop(q)).eql(2); // qpop_front/qpop
+      should(yield client.qpop_back(q)).eql(1); // qpop_back
+      should(yield client.qpush(q, 1)).eql(1);  // qpush/qpush_back
+      should(yield client.qclear(q)).eql(1); // qclear
+      done();
+    })();
+  });
+
+  it('qlist/qrlist', function(done){
+    co(function*(){
+      var start = uk('q');
+      var a = uk('q');
+      var b = uk('q');
+      yield client.qpush(a, 1)
+      yield client.qpush(b, 1)
+      var lst = yield client.qlist(start, uk('q'), -1);
+      var rlst = yield client.qrlist(uk('q'), start, -1);
+      should(lst).eql([a, b]);
+      should(rlst).eql([b, a]);
+      done();
+    })();
+  });
+
 });
