@@ -6,6 +6,8 @@ ssdb is a fast nosql database, an alternative to redis.
 
 Latest version: v0.0.4 (Currently un-fully-tested).
 
+![](https://api.travis-ci.org/eleme/node-ssdb.svg)
+
 Requirements
 -------------
 
