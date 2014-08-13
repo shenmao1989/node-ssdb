@@ -8,7 +8,7 @@ Latest version: v0.0.5
 
 ![](https://api.travis-ci.org/eleme/node-ssdb.svg)
 
-Feel free to open an issue =_-
+Feel free to open an issue! =_-
 
 Requirements
 -------------
