@@ -8,6 +8,8 @@ Latest version: v0.0.5
 
 ![](https://api.travis-ci.org/eleme/node-ssdb.svg)
 
+Feel free to open an issue =_-
+
 Requirements
 -------------
 
@@ -66,6 +68,15 @@ client.set('key', 'val')
   console.log(d);  // 'val'
 });
 ```
+
+Callback Parameters
+-------------------
+
+Callback functions have two parameters: `error, data`;
+
+- on `status_ok`:  only `error` is `undefined`;
+- on `status_not_found`: `error` and `data` are both `undefined`
+- on `status_client_error` and other `not_ok` status: only `data` is `undefined`.
 
 API References
 --------------
