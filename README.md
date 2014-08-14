@@ -143,8 +143,6 @@ client.on('status_ok', function(cmd, data){
 
 ### Connection Events Handling
 
-The node connection object is `client.conn.sock`, to listen connection error as an example:
-
 All events (except `'data`) on nodejs's `net.event.connect` are avaliable (reference: http://nodejs.org/api/net.html)
 
 - event 'connect'
