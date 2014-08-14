@@ -17,6 +17,20 @@ var uk = (function(base){
 })(new Date().getTime());
 
 
+function randomString(length) {
+    var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split('');
+
+    if (! length) {
+        length = Math.floor(Math.random() * chars.length);
+    }
+
+    var str = '';
+    for (var i = 0; i < length; i++) {
+        str += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return str;
+}
+
 // mocha ssdb module
 describe('ssdb', function(){
 
@@ -87,6 +101,17 @@ describe('ssdb', function(){
       yield client.set(key, 'v');
       var d = yield client.get(key);
       should(d).eql('v');
+      done();
+    })();
+  });
+
+  it('get big data', function(done){
+    co(function*(){
+      var key = uk();
+      var value = randomString(65535);
+      yield client.set(key, value);
+      var d = yield client.get(key);
+      should(d).eql(value);
       done();
     })();
   });
