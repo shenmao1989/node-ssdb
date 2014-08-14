@@ -4,7 +4,7 @@ node-ssdb
 [ssdb](https://github.com/ideawu/ssdb) nodejs client library,
 ssdb is a fast nosql database, an alternative to redis.
 
-Latest version: v0.0.7
+Latest version: v0.0.8
 
 ![](https://api.travis-ci.org/eleme/node-ssdb.svg)
 
@@ -145,13 +145,20 @@ client.on('status_ok', function(cmd, data){
 
 The node connection object is `client.conn.sock`, to listen connection error as an example:
 
+All events (except `'data`) on nodejs's `net.event.connect` are avaliable (reference: http://nodejs.org/api/net.html)
+
+- event 'connect'
+- event 'end'
+- event 'timeout'
+- event 'drain'
+- event 'error'
+- event 'close'
+
 ```js
-client.conn.sock.on('error', function(err){
-  throw err;
+client.on('error', function(err){
+  log.error('ssdb connect error: %s', err);
 });
 ```
-
-Connection events reference: http://nodejs.org/api/net.html
 
 SSDB API Documentation
 ----------------------
