@@ -1,6 +1,6 @@
 {
   "name": "ssdb",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "repository": {
     "type": "git",
     "url": "git://github.com/eleme/node-ssdb.git"
@@ -11,7 +11,7 @@
   "main": "./lib/ssdb",
   "license": "MIT",
   "engines": {
-    "node" : ">=0.8"
+    "node": ">=0.8"
   },
   "dependencies": {
     "q": "~1.0.1"
