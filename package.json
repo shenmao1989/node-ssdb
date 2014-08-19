@@ -6,8 +6,14 @@
     "url": "git://github.com/eleme/node-ssdb.git"
   },
   "description": "ssdb nodejs client library, ssdb is a fast nosql database, an alternative to redis.",
-  "author": "hit9 <wangchao@ele.me>",
-  "keywords": ["ssdb", "client"],
+  "author": {
+    "name": "hit9",
+    "email": "wangchao@ele.me"
+  },
+  "keywords": [
+    "ssdb",
+    "client"
+  ],
   "main": "./lib/ssdb",
   "license": "MIT",
   "engines": {
@@ -25,5 +31,28 @@
   "scripts": {
     "test": "mocha --harmony-generators test.js"
   },
-  "license": "MIT"
+  "bugs": {
+    "url": "https://github.com/eleme/node-ssdb/issues"
+  },
+  "homepage": "https://github.com/eleme/node-ssdb",
+  "_id": "ssdb@0.0.6",
+  "dist": {
+    "shasum": "70a0d936e8ce371f14f6991c20581babb878d165",
+    "tarball": "http://registry.npmjs.org/ssdb/-/ssdb-0.0.6.tgz"
+  },
+  "_from": "ssdb@0.0.6",
+  "_npmVersion": "1.4.3",
+  "_npmUser": {
+    "name": "hit9",
+    "email": "nz2324@126.com"
+  },
+  "maintainers": [
+    {
+      "name": "hit9",
+      "email": "nz2324@126.com"
+    }
+  ],
+  "directories": {},
+  "_shasum": "70a0d936e8ce371f14f6991c20581babb878d165",
+  "_resolved": "https://registry.npmjs.org/ssdb/-/ssdb-0.0.6.tgz"
 }
